@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="green">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Jacinto Wong — jacinto.design [terminal]</title>
+  <meta name="description" content="Senior Developer at CBC · Instructor at Zero to Mastery. A terminal-themed portfolio — type 'help' to get started." />
+  <meta property="og:title" content="Jacinto Wong — jacinto.design [terminal]" />
+  <meta property="og:description" content="A green-phosphor terminal portfolio. Type commands to explore. Some commands aren't listed." />
+  <meta property="og:type" content="website" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23060a06'/%3E%3Ctext x='5' y='22' font-family='monospace' font-size='16' fill='%2333ff66'%3E%26gt;_%3C/text%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="bezel">
+    <div class="crt" id="crt">
+      <div class="screen" id="screen">
+        <div id="output" role="log" aria-live="polite" aria-label="Terminal output"></div>
+        <div class="input-line" id="input-line" hidden>
+          <label for="cmd" class="prompt" id="prompt-label">guest@jacinto:~$</label>
+          <input id="cmd" type="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="send" aria-label="Terminal command input" />
+          <span class="caret" aria-hidden="true"></span>
+        </div>
+      </div>
+      <div class="scanlines" aria-hidden="true"></div>
+      <div class="vignette" aria-hidden="true"></div>
+      <div class="flicker" aria-hidden="true"></div>
+    </div>
+    <div class="chips" id="chips" hidden>
+      <button data-cmd="help">help</button>
+      <button data-cmd="about">about</button>
+      <button data-cmd="projects">projects</button>
+      <button data-cmd="skills">skills</button>
+      <button data-cmd="contact">contact</button>
+      <button data-cmd="clear">clear</button>
+    </div>
+  </div>
+
+  <noscript>
+    <div class="noscript">
+      <h1>Jacinto Wong — Jacinto Design</h1>
+      <p>Senior Developer at CBC · Instructor at Zero to Mastery · Toronto, Canada.</p>
+      <p>This portfolio is an interactive terminal and needs JavaScript. In the meantime:
+        <a href="https://jacinto.design">jacinto.design</a> ·
+        <a href="https://github.com/JacintoDesign">GitHub</a> ·
+        <a href="mailto:contact@jacinto.design">contact@jacinto.design</a>
+      </p>
+    </div>
+  </noscript>
+
+  <script src="js/data.js"></script>
+  <script src="js/game.js"></script>
+  <script src="js/terminal.js"></script>
+</body>
+</html>
