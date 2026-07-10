@@ -10,6 +10,8 @@ The boot sequence warns about "1 hidden sector". Any of these work:
 - `xyzzy` (the classic magic word) → points you at the door
 - `dungeon` (or `play` / `quest` / `adventure`) → starts the game
 
+Progress auto-saves: `quit` and later `dungeon` resumes; `dungeon new` restarts. A clock runs from your first command — your best time is kept.
+
 ## Walkthrough
 
 ```
@@ -30,8 +32,16 @@ use tape
 hunter2         # password from the note
 ```
 
-Winning grants the **SYSOP** achievement: your prompt becomes `sysop@jacinto:~$` (persisted in localStorage), and `whoami` / `trophy` change.
+## Achievements
+
+- **SYSOP** — win the game. Your prompt becomes `sysop@jacinto:~$` (persisted), and `whoami` / `trophy` change.
+- **COMPLETIONIST** — win while carrying all five items (keycard, tape, fuse, flashlight, note).
+- `trophy` (or `achievements`) lists them plus your best dungeon time.
+
+## Root access
+
+The sticky note is good for more than the mainframe: `su root` + `hunter2` at the shell grants a red `root@jacinto:~#` prompt and unlocks the `.sysop/` directory — `ls .sysop`, then `cat .sysop/origin.txt`, `.sysop/colophon.txt`, `.sysop/todo.txt`. `logout` drops privileges.
 
 ## Other easter eggs
 
-`sudo`, `rm -rf /`, `coffee`, `exit`, `xyzzy` after entering the game.
+`sudo` (changes with rank), `rm -rf /`, `coffee`, `degauss`, `exit` (really powers the CRT down… briefly), `xyzzy` inside the game.

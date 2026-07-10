@@ -46,6 +46,21 @@ window.PhosphorData = {
       tech: ["TypeScript", "Next.js", "Supabase", "PostgreSQL"],
       href: "https://vibemail-fullstack.vercel.app",
       repo: "https://github.com/JacintoDesign/vibemail-fullstack",
+      image: "assets/projects/vibemail.jpg",
+      caseStudy: {
+        tagline: "A Gmail data-liberation engine wearing a frosted-glass mail client.",
+        intro: [
+          "VibeMail extracts your Gmail into your own Supabase PostgreSQL database via OAuth 2.0, keeps it in sync in real time through Gmail Pub/Sub push notifications — no polling, ever — and exposes the whole thing through a typed REST API you own.",
+          "On top of that engine sits a Next.js single-page client: a three-pane desktop layout with a responsive mobile shell, glassmorphic theming, and keyboard-driven flows for reading, triaging, composing, and searching. The API and the UI deploy together as a single Vercel project.",
+        ],
+        role: "Design & full-stack development",
+        highlights: [
+          ["Real-time sync engine", "A Gmail Pub/Sub webhook delivers a historyId and the sync layer pulls just the delta via history.list. Backfill reaches older mail beyond the initial seed, a reconcile pass drops stale labels, and a daily cron renews the watch before it expires."],
+          ["Security first", "Google tokens are stored encrypted at rest with AES-256-GCM, sessions ride a 7-day HS256 JWT, and the browser only ever talks to the same-origin API — provider credentials never leave the server."],
+          ["A typed REST API", "Everything lives under /api/v1: list, read, send, search, threads, drafts, labels, attachments. Route entry points stay thin while business logic lives in a provider-abstracted core that could outlive Gmail."],
+          ["Keyboard-driven client", "Cmd-K search, single-key shortcuts, cursor-paginated list with background auto-sync, reply-in-thread, drafts, attachments, and pop-out thread windows."],
+        ],
+      },
     },
     {
       id: "b-safe-electric",
@@ -56,6 +71,21 @@ window.PhosphorData = {
       tech: ["TypeScript", "React", "Vite", "Tailwind CSS"],
       href: "https://b-safe-electric.vercel.app",
       repo: "https://github.com/JacintoDesign/b-safe-electric",
+      image: "assets/projects/b-safe-electric.jpg",
+      caseStudy: {
+        tagline: "A marketing site built to turn GTA visitors into booked calls.",
+        intro: [
+          "B-Safe Electric serves commercial, industrial, and institutional clients across the Greater Toronto Area. The brief was simple: a fast, credible web presence that presents the company's services and completed work, then gets out of the way of the phone call.",
+          "The site is a multi-page React + Vite build — Home, About, Projects, Services, Contact, and Careers — with client-side routing, a shared layout shell, per-page SEO, gallery lightboxes, and a contact form that delivers leads with zero backend to maintain.",
+        ],
+        role: "Design, development & client delivery",
+        highlights: [
+          ["Built to convert", "Every page funnels toward contact. The form posts through Formspree, so enquiries land in the client's inbox without a server, a database, or anything that can fall over at 2am."],
+          ["Per-page SEO", "A reusable Seo component sets the title, description, and meta tags for each route, so service pages can rank for the service-area searches that actually bring in work."],
+          ["Project galleries", "Completed work is browsable by category through an image lightbox — proof of workmanship is the strongest sales asset a trade business has."],
+          ["Zero-maintenance stack", "React 18, Vite, and Tailwind on static hosting. No CMS to patch, no plugins to update — content changes are quick edits, not retainers."],
+        ],
+      },
     },
     {
       id: "scoundrel",
@@ -66,6 +96,21 @@ window.PhosphorData = {
       tech: ["JavaScript", "PWA", "Service Worker", "HTML5", "CSS3"],
       href: "https://ztm-scoundrel-game.vercel.app",
       repo: "https://github.com/JacintoDesign/scoundrel-game-pwa",
+      image: "assets/projects/scoundrel.jpg",
+      caseStudy: {
+        tagline: "The cult solo dungeon-crawler card game, rebuilt as an offline-first PWA.",
+        intro: [
+          "Scoundrel is a rules-complete implementation of the solo card game: a 44-card dungeon, rooms of four, weapons that dull against tougher monsters, potions that only heal once per room. Every edge case — the non-increasing weapon gate, the no-avoiding-twice rule, negative scoring on death — is faithfully implemented with clear UI feedback and a running action log.",
+          "It's built with React + Vite and ships as an installable Progressive Web App: the game auto-saves after every action, resumes exactly where you left off, and plays fully offline once loaded.",
+        ],
+        role: "Design & development",
+        highlights: [
+          ["A faithful rules engine", "The complete ruleset lives in a standalone game core — deck construction, room resolution, the weapon's non-increasing defeat gate, potion limits, and both win and loss scoring — so the UI stays a thin, testable layer on top."],
+          ["Offline-first PWA", "vite-plugin-pwa and Workbox cache the shell and assets on first load; after that the dungeon works in airplane mode. The service worker auto-updates when a new release ships."],
+          ["Motion with respect", "Cards flip in 3D with proper backs, and the whole animation layer honors prefers-reduced-motion — the game is just as playable with the theatrics turned off."],
+          ["Accessible by default", "Full keyboard support, visible focus states, and an ARIA live region narrating the action log. Game over shows the killer card, so every defeat tells its story."],
+        ],
+      },
     },
     {
       id: "news-reader",
@@ -76,6 +121,21 @@ window.PhosphorData = {
       tech: ["TypeScript", "REST API", "Vercel Functions"],
       href: "https://news-reader-azure.vercel.app",
       repo: "https://github.com/JacintoDesign/news-reader",
+      image: "assets/projects/news-reader.jpg",
+      caseStudy: {
+        tagline: "One article at a time — a Flipboard-style reader without the noise.",
+        intro: [
+          "Most news sites optimize for time-on-site. News Reader optimizes for the opposite: one featured article at a time from TheNewsAPI, three per page, no infinite scroll, no autoplay — skim the day and get out.",
+          "The interesting work is in the plumbing: the API token never reaches the browser (an Express proxy in development, Vercel Serverless Functions in production), and a client-side cache keyed by query and page prefetches neighbours so paging feels instant.",
+        ],
+        role: "Design & development",
+        highlights: [
+          ["Secure proxy architecture", "All upstream calls route through /api/* — Express locally, Vercel Functions in production — so the TheNewsAPI token lives only in server environment variables."],
+          ["Cache and prefetch", "Responses are cached per query-and-page with the next and previous pages prefetched in the background, so pagination renders from memory instead of the network."],
+          ["Thoughtful search rules", "A search term overrides category filters, and searches carry a recency bias — sorted by publish date and bounded to a recent window — because nobody searching news wants 2019."],
+          ["Graceful failure", "Upstream usage limits map to a clean HTTP 429 with a friendly message, and favorites persist in localStorage with their own independent pagination."],
+        ],
+      },
     },
     {
       id: "music-player",
@@ -86,6 +146,21 @@ window.PhosphorData = {
       tech: ["TypeScript", "React", "PWA", "IndexedDB"],
       href: "https://ztm-music-player.vercel.app",
       repo: "https://github.com/JacintoDesign/ztm-music-player",
+      image: "assets/projects/music-player.jpg",
+      caseStudy: {
+        tagline: "A Spotify-style player for your own MP3s — no server, no account, no upload.",
+        intro: [
+          "Drop in your MP3s and the player extracts ID3 metadata in the browser — title, artist, album art, duration, genre — generating placeholder artwork when a file has none. Playlists, a drag-to-reorder queue, shuffle and repeat modes: the full player experience, running entirely client-side.",
+          "The library lives in IndexedDB and the app shell in a service worker, so the whole thing is an installable, offline-first PWA. Nothing is uploaded anywhere; export/import gives you backups of your own library.",
+        ],
+        role: "Design & development",
+        highlights: [
+          ["ID3 parsing in the browser", "Metadata and embedded album art are extracted client-side on upload, with SHA-256 content hashing to deduplicate files — the same track never lands in the library twice."],
+          ["A real queue", "Add tracks, drag to reorder, remove mid-flow. Shuffle and repeat (off / one / all) behave the way a decade of streaming apps has taught fingers to expect."],
+          ["Offline-first storage", "The entire library — audio, artwork, playlists — persists in IndexedDB behind a service worker. Close the tab, go offline, come back: your music is still there."],
+          ["OS-level integration", "The Media Session API wires up lock-screen controls and hardware media keys, and a set of audio visualizers — bars, radial, soft wavefield — reacts to playback in real time."],
+        ],
+      },
     },
     {
       id: "recipes",
@@ -96,6 +171,21 @@ window.PhosphorData = {
       tech: ["TypeScript", "PWA", "Express", "IndexedDB"],
       href: "https://ztm-recipe-app.vercel.app",
       repo: "https://github.com/JacintoDesign/recipes",
+      image: "assets/projects/recipes.jpg",
+      caseStudy: {
+        tagline: "Recipe discovery that keeps working when the network doesn't.",
+        intro: [
+          "A full-stack Progressive Web App on TheMealDB: search recipes, browse categories, open full detail views, and save favorites. A small Express proxy keeps the API key off the client and caches category data server-side.",
+          "The defining feature is resilience — favorites are stored in IndexedDB and work fully offline, runtime caching keeps browsing fast on flaky connections, and a dedicated offline fallback page means the app never dead-ends.",
+        ],
+        role: "Design & development",
+        highlights: [
+          ["Offline favorites", "Favorites live in IndexedDB via idb — add, view, and remove recipes with no connection at all. Your saved list is yours, network or not."],
+          ["A cached proxy", "The Express backend forwards to TheMealDB with the key held server-side, caching category responses with NodeCache and hardening the surface with Helmet, compression, and CORS."],
+          ["Polished loading states", "Skeleton loaders, error boundaries, and toast notifications keep every state — loading, empty, failed, offline — deliberate rather than accidental."],
+          ["Accessible and themable", "Dark, light, and system themes with persistence, semantic markup, keyboard focus states, alt text, and a skip link — the fundamentals, done properly."],
+        ],
+      },
     },
     {
       id: "agentic-course",
@@ -116,6 +206,49 @@ window.PhosphorData = {
     ["AI", "AI agents · LLM orchestration · tool use · evals"],
     ["Teaching", "Course design · 5 years classroom + online instruction"],
   ],
+
+  // root-only bonus files, unlocked via `su root`
+  sysop: {
+    "readme": [
+      "you made it. this is the backstage.",
+      "",
+      "everything in here is off the record — the stuff that doesn't fit",
+      "in a portfolio card. thanks for playing all the way down.",
+    ],
+    "origin.txt": [
+      "THE REAL STORY",
+      "",
+      "Age 12: built my first computer from parts because buying one",
+      "assembled felt like cheating.",
+      "",
+      "Later: five years in classrooms in Canada and South Korea, teaching",
+      "everything except code. Then four months of relentless online",
+      "learning — nights, weekends, lunch breaks — and a Senior Developer",
+      "offer from the CBC that I still had to read twice.",
+      "",
+      "Now I teach at Zero to Mastery because I remember exactly how the",
+      "leap felt from the other side. The courses I build are the courses",
+      "I wish had existed when I was grinding through those four months.",
+    ],
+    "colophon.txt": [
+      "HOW THIS SITE WAS MADE",
+      "",
+      "stack:      HTML + CSS + vanilla JavaScript. no framework, no build",
+      "            step, no dependencies. view-source is the documentation.",
+      "crt:        scanlines are a repeating-linear-gradient. the glow is",
+      "            text-shadow. the flicker is an 8s keyframe. the curvature",
+      "            is your imagination.",
+      "the game:   a hand-rolled state machine, eight rooms, one grue.",
+      "built:      in a terminal, about a terminal, with Claude.",
+    ],
+    "todo.txt": [
+      "[ ] ship the Agentic Engineering course",
+      "[x] reboot MAINFRAME-7  (thanks, whoever you are)",
+      "[ ] teach the vending machine to accept exact change",
+      "[ ] water the server-room plants (plastic, but still)",
+      "[ ] add more secrets to this site  <- maybe already done?",
+    ],
+  },
 
   socials: [
     ["Website", "jacinto.design", "https://jacinto.design"],

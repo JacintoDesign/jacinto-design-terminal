@@ -3,6 +3,9 @@
 
 window.PhosphorGame = (() => {
   const PASSWORD = "hunter2";
+  const SAVE_KEY = "phosphor-dungeon-save";
+  const BEST_KEY = "phosphor-best-ms";
+  const ACH_KEY = "phosphor-achievements";
 
   const ITEMS = {
     keycard: { desc: "a magnetic keycard, stamped TAPE LIBRARY — ACCESS LEVEL 3" },
@@ -92,11 +95,10 @@ window.PhosphorGame = (() => {
 
   const DIRS = { n: "north", s: "south", e: "east", w: "west", north: "north", south: "south", east: "east", west: "west" };
 
-  let io, state;
+  let io, state, runStart;
 
-  function start(ioHandle) {
-    io = ioHandle;
-    state = {
+  function freshState() {
+    return {
       room: "terminal",
       inv: [],
       visited: new Set(["terminal"]),
@@ -106,7 +108,63 @@ window.PhosphorGame = (() => {
       awaitingPassword: false,
       pwFails: 0,
       won: false,
+      elapsedMs: 0,
     };
+  }
+
+  function save() {
+    if (state.won) return;
+    const data = { ...state, visited: [...state.visited], elapsedMs: elapsedNow() };
+    try { localStorage.setItem(SAVE_KEY, JSON.stringify(data)); } catch (e) { /* private mode */ }
+  }
+
+  function loadSave() {
+    try {
+      const raw = localStorage.getItem(SAVE_KEY);
+      if (!raw) return null;
+      const data = JSON.parse(raw);
+      return { ...freshState(), ...data, visited: new Set(data.visited) };
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function elapsedNow() {
+    return state.elapsedMs + (Date.now() - runStart);
+  }
+
+  function fmtTime(ms) {
+    const s = Math.round(ms / 1000);
+    return `${String(Math.floor(s / 60)).padStart(2, "0")}:${String(s % 60).padStart(2, "0")}`;
+  }
+
+  function addAchievement(name) {
+    let list;
+    try { list = JSON.parse(localStorage.getItem(ACH_KEY) || "[]"); } catch (e) { list = []; }
+    const isNew = !list.includes(name);
+    if (isNew) {
+      list.push(name);
+      try { localStorage.setItem(ACH_KEY, JSON.stringify(list)); } catch (e) { /* ignore */ }
+    }
+    return isNew;
+  }
+
+  function start(ioHandle, opts = {}) {
+    io = ioHandle;
+    runStart = Date.now();
+    const saved = !opts.fresh && loadSave();
+    if (saved) {
+      state = saved;
+      io.print("");
+      io.print("═══ THE LOST MAINFRAME ═══", "bright");
+      io.print("");
+      io.print(`(resuming saved expedition — ${fmtTime(state.elapsedMs)} on the clock.`, "dim");
+      io.print(" type 'quit' then 'dungeon new' to start over.)", "dim");
+      io.print("");
+      look();
+      return;
+    }
+    state = freshState();
     io.print("", "");
     io.print("═══ THE LOST MAINFRAME ═══", "bright");
     io.print("");
@@ -116,8 +174,10 @@ window.PhosphorGame = (() => {
     io.print("");
     io.print("Commands: look · go <n/s/e/w> · take <item> · use <item> · read <item>", "dim");
     io.print("          inventory (i) · map · hint · help · quit", "dim");
+    io.print("(progress auto-saves. the clock is running.)", "dim");
     io.print("");
     look();
+    save();
   }
 
   function room() { return ROOMS[state.room]; }
@@ -302,6 +362,14 @@ window.PhosphorGame = (() => {
   function win() {
     state.won = true;
     state.awaitingPassword = false;
+    const total = elapsedNow();
+    let best = null;
+    try { best = Number(localStorage.getItem(BEST_KEY)) || null; } catch (e) { /* ignore */ }
+    const isBest = !best || total < best;
+    if (isBest) {
+      try { localStorage.setItem(BEST_KEY, String(total)); } catch (e) { /* ignore */ }
+    }
+    try { localStorage.removeItem(SAVE_KEY); } catch (e) { /* ignore */ }
     io.print("");
     io.print("CONSOLE: ROOT ACCESS GRANTED", "bright");
     io.print("CONSOLE: RESTORING LOST SECTOR ..........", "bright");
@@ -323,13 +391,24 @@ window.PhosphorGame = (() => {
     io.print("A course on building production-grade AI agents — coming soon");
     io.print("to Zero to Mastery. You found it before the release. Nice.");
     io.print("");
+    addAchievement("SYSOP");
     io.print("★ ACHIEVEMENT UNLOCKED: SYSOP", "bright");
+    if (state.inv.length === Object.keys(ITEMS).length) {
+      addAchievement("COMPLETIONIST");
+      io.print("★ ACHIEVEMENT UNLOCKED: COMPLETIONIST — every item recovered", "bright");
+    }
+    io.print(`TIME: ${fmtTime(total)}${isBest ? " — new personal best" : ""}`, "bright");
     io.print("MAINFRAME-7 will remember you. Your prompt has been upgraded.", "dim");
     io.print("");
     io.exit(true);
   }
 
   function handle(raw) {
+    route(raw);
+    if (!state.won) save();
+  }
+
+  function route(raw) {
     const input = raw.trim().toLowerCase();
     if (!input) return;
 
@@ -356,6 +435,7 @@ window.PhosphorGame = (() => {
       case "xyzzy": return io.print("A hollow voice says: \"You're already here.\"", "dim");
       case "quit": case "exit": case "q":
         io.print("The dungeon dissolves into phosphor static. You wake at your shell.", "dim");
+        io.print("(progress saved — 'dungeon' resumes where you left off.)", "dim");
         io.print("");
         return io.exit(false);
       default:

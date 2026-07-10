@@ -135,8 +135,43 @@ body {
 
 @media (prefers-reduced-motion: reduce) {
   .flicker { animation: none; }
-  .caret { animation: none !important; opacity: 1; }
+  .crt { animation: none !important; }
 }
+
+/* ── fx off: plain phosphor ────────────────────────────────────── */
+
+:root.no-fx .scanlines,
+:root.no-fx .flicker,
+:root.no-fx .vignette { display: none; }
+:root.no-fx .screen { text-shadow: none; }
+:root.no-fx .crt {
+  box-shadow: inset 0 0 60px rgba(0, 0, 0, 0.4), 0 0 20px rgba(0, 0, 0, 0.8);
+}
+
+/* ── CRT power & degauss ───────────────────────────────────────── */
+
+@keyframes crt-on {
+  0%   { transform: scaleY(0.004) scaleX(0.55); filter: brightness(6); }
+  50%  { transform: scaleY(0.004) scaleX(1); filter: brightness(4); }
+  100% { transform: none; filter: none; }
+}
+.crt.crt-on { animation: crt-on 0.55s ease-out; }
+
+@keyframes crt-off {
+  0%   { transform: none; filter: brightness(1); }
+  55%  { transform: scaleY(0.004) scaleX(1); filter: brightness(5); }
+  100% { transform: scaleY(0.004) scaleX(0.002); filter: brightness(0.1); }
+}
+.crt.crt-off { animation: crt-off 0.5s ease-in forwards; }
+
+@keyframes degauss {
+  0%   { transform: none; filter: none; }
+  20%  { transform: skewX(1.6deg) scale(1.012, 0.99); filter: hue-rotate(20deg) brightness(1.3); }
+  45%  { transform: skewX(-1.1deg) scale(0.995, 1.008); filter: hue-rotate(-14deg); }
+  70%  { transform: skewX(0.4deg); filter: hue-rotate(6deg); }
+  100% { transform: none; filter: none; }
+}
+.crt.degauss { animation: degauss 0.75s ease-out; }
 
 /* ── Output lines ──────────────────────────────────────────────── */
 
@@ -166,6 +201,18 @@ body {
 
 .prompt { color: var(--fg-dim); text-shadow: none; flex: none; }
 
+.prompt.root {
+  color: #ff7b72;
+  text-shadow: 0 0 6px rgba(255, 90, 80, 0.55);
+}
+
+.input-wrap {
+  position: relative;
+  flex: 1;
+  display: flex;
+  min-width: 4ch;
+}
+
 #cmd {
   flex: 1;
   background: transparent;
@@ -176,9 +223,27 @@ body {
   text-shadow: inherit;
   caret-color: var(--fg-bright);
   min-width: 4ch;
+  position: relative;
+  z-index: 1;
 }
 
-.caret { display: none; }
+.ghost {
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: var(--fg-dim);
+  opacity: 0.65;
+  text-shadow: none;
+  white-space: pre;
+  pointer-events: none;
+}
+
+.measure {
+  position: absolute;
+  visibility: hidden;
+  white-space: pre;
+  pointer-events: none;
+}
 
 /* ── Quick-command chips ───────────────────────────────────────── */
 
