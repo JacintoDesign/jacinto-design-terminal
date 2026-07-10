@@ -42,6 +42,11 @@
 
 html, body { height: 100%; }
 
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
 body {
   background: var(--bg);
   font-family: var(--font);
@@ -180,7 +185,7 @@ body {
 .chips {
   display: flex;
   gap: 8px;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   padding-top: clamp(8px, 1.5vmin, 14px);
 }
 
@@ -214,4 +219,12 @@ body {
 @media (max-width: 600px) {
   .screen { font-size: 13px; }
   .ascii { font-size: min(0.85em, 2.6vw); }
+  .chips { gap: 6px; }
+  .chips button {
+    flex: 1 1 auto;
+    min-width: 0;
+    padding: 5px 2px;
+    font-size: 11px;
+    text-align: center;
+  }
 }

@@ -90,8 +90,23 @@
     " ╚════╝ ╚═╝  ╚═╝ ╚═════╝╚═╝╚═╝  ╚═══╝   ╚═╝    ╚═════╝ ",
   ].join("\n");
 
+  function fitAscii(div) {
+    requestAnimationFrame(() => {
+      div.style.fontSize = "";
+      const avail = div.clientWidth - 10; // scrollbar allowance
+      if (div.scrollWidth > avail) {
+        const cur = parseFloat(getComputedStyle(div).fontSize);
+        div.style.fontSize = Math.max(4, cur * (avail / div.scrollWidth)) + "px";
+      }
+    });
+  }
+
+  window.addEventListener("resize", () => {
+    document.querySelectorAll(".ascii").forEach(fitAscii);
+  });
+
   function banner() {
-    print(BANNER, "ascii");
+    fitAscii(print(BANNER, "ascii"));
     print("");
     print(`${D.site.person} · ${D.site.title}`, "bright");
     print(`${D.site.location}`, "dim");
