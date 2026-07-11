@@ -202,7 +202,7 @@
   function banner() {
     fitAscii(print(BANNER, "ascii"));
     print("");
-    print(`${D.site.person} · ${D.site.title}`, "bright");
+    print(`${D.site.name} · ${D.site.title}`, "bright");
     print(`${D.site.location}`, "dim");
     print("");
   }
