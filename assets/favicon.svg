@@ -11,10 +11,8 @@
   <!-- terminal bezel -->
   <rect width="32" height="32" rx="7" fill="#060a06"/>
   <rect x="1" y="1" width="30" height="30" rx="6" fill="none" stroke="#33ff66" stroke-opacity="0.28" stroke-width="1"/>
-  <!-- phosphor block "J": top bar, stem, left hook -->
-  <g filter="url(#glow)" fill="none" stroke="#33ff66" stroke-width="3.2" stroke-linecap="square" stroke-linejoin="miter">
-    <path d="M9 8 H20 M16 8 V19 Q16 23.5 11.5 23.5 Q8 23.5 8 19.5"/>
+  <!-- phosphor hooked "J": right stem descending into a left-curling bowl -->
+  <g filter="url(#glow)" fill="none" stroke="#33ff66" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M20.5 6 V17 Q20.5 24 13 24 Q6.5 24 6.5 18"/>
   </g>
-  <!-- block cursor -->
-  <rect x="21" y="19.5" width="3.4" height="4.2" fill="#33ff66" filter="url(#glow)"/>
 </svg>

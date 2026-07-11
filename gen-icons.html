@@ -1,0 +1,34 @@
+<!doctype html><meta charset="utf-8">
+<body style="background:#0d0d0d;color:#33ff66;font-family:monospace;padding:20px">
+<div id="log">rendering…</div>
+<div id="preview" style="margin-top:20px;display:flex;gap:24px;align-items:center"></div>
+<script>
+const log = m => document.getElementById('log').textContent = m;
+async function render(size){
+  const res = await fetch('assets/favicon.svg?bust=' + size);
+  const svg = await res.text();
+  const url = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+  const img = await new Promise((ok,err)=>{const i=new Image();i.onload=()=>ok(i);i.onerror=err;i.src=url;});
+  const c = document.createElement('canvas'); c.width=c.height=size;
+  const x = c.getContext('2d');
+  x.fillStyle = '#060a06'; x.fillRect(0,0,size,size);   // opaque square for app icon
+  x.drawImage(img,0,0,size,size);
+  return c;
+}
+async function save(canvas,name){
+  const b64 = canvas.toDataURL('image/png').split(',')[1];
+  const r = await fetch('http://127.0.0.1:8992/',{method:'POST',headers:{'X-Filename':name},body:b64});
+  return await r.text();
+}
+(async()=>{
+  try{
+    const c192 = await render(192), c512 = await render(512);
+    const p = document.getElementById('preview');
+    [c192,c512].forEach(c=>{c.style.width='120px';c.style.imageRendering='auto';p.appendChild(c);});
+    const a = await save(c192,'icon-192.png');
+    const b = await save(c512,'icon-512.png');
+    log('saved icon-192.png ('+a+' bytes) and icon-512.png ('+b+' bytes)');
+  }catch(e){ log('ERROR: ' + e.message); }
+})();
+</script>
+</body>
