@@ -1,4 +1,4 @@
-# phosphor-portfolio
+# jacinto-design-terminal
 
 A green-phosphor CRT terminal portfolio for [jacinto.design](https://jacinto.design). Vanilla HTML/CSS/JS — no framework, no build step.
 
