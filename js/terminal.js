@@ -419,6 +419,7 @@
         print("CORE", "bright");
         print("  about          who is jacinto?");
         print("  projects       browse the work");
+        print("  <id>           type a project id for its case study (e.g. vibemail)");
         print("  open <id>      open a project in a new tab (e.g. open vibemail)");
         print("  preview <id>   render a project screenshot in glorious ASCII");
         print("  skills         the toolbox");
@@ -453,7 +454,7 @@
     projects: {
       desc: "browse the work",
       fn() {
-        print("PROJECTS — 'open <id>' for links · 'cat projects/<id>.md' for the case study", "dim");
+        print("PROJECTS — type an <id> for the case study · 'open <id>' for links", "dim");
         print("");
         D.projects.forEach((p) => {
           const id = p.id.padEnd(16);
@@ -483,7 +484,7 @@
         print(p.description);
         print("");
         print(`stack: ${p.tech.join(" · ")}`, "dim");
-        if (p.caseStudy) print(`case study: cat projects/${p.id}.md`, "dim");
+        if (p.caseStudy) print(`case study: type '${p.id}' (or 'cat projects/${p.id}.md')`, "dim");
         if (p.status === "soon") {
           print("");
           print("status: in development — no link yet. it may already exist somewhere down below…", "dim");
@@ -892,8 +893,9 @@
     }
     const parts = v.split(/\s+/);
     if (parts.length === 1) {
-      const c = Object.keys(commands).filter((k) => !commands[k].hidden).sort()
-        .find((k) => k.startsWith(lower) && k.length > v.length);
+      const pool = Object.keys(commands).filter((k) => !commands[k].hidden)
+        .concat(D.projects.map((p) => p.id)).sort();
+      const c = pool.find((k) => k.startsWith(lower) && k.length > v.length);
       return c || null;
     }
     const pool = argPools(parts[0].toLowerCase());
@@ -958,13 +960,19 @@
     }
 
     const [word, ...args] = trimmed.split(/\s+/);
-    const name = ALIASES[word.toLowerCase()] || word.toLowerCase();
+    const bare = word.toLowerCase().replace(/^\//, "");
+    const name = ALIASES[bare] || bare;
     const cmd = commands[name];
     if (cmd) {
       cmd.fn(args);
     } else {
-      print(`command not found: ${word}`, "err");
-      print("try 'help' — or look closer.", "dim");
+      const proj = D.projects.find((p) => p.id === bare);
+      if (proj) {
+        caseStudyView(proj);
+      } else {
+        print(`command not found: ${word}`, "err");
+        print("try 'help' — or look closer.", "dim");
+      }
     }
     print("");
   }
@@ -975,7 +983,8 @@
     const parts = raw.split(/\s+/);
     if (state.mode !== "shell") return;
     if (parts.length === 1) {
-      const visible = Object.keys(commands).filter((c) => !commands[c].hidden);
+      const visible = Object.keys(commands).filter((c) => !commands[c].hidden)
+        .concat(D.projects.map((p) => p.id));
       const matches = visible.filter((c) => c.startsWith(parts[0].toLowerCase()));
       if (matches.length === 1) input.value = matches[0] + " ";
       else if (matches.length > 1) {

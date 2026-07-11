@@ -1,7 +1,7 @@
 // Phosphor service worker — stale-while-revalidate for same-origin assets
 "use strict";
 
-const CACHE = "phosphor-v5";
+const CACHE = "phosphor-v6";
 const PRECACHE = [
   "/",
   "/index.html",
@@ -10,6 +10,7 @@ const PRECACHE = [
   "/js/game.js",
   "/js/terminal.js",
   "/manifest.json",
+  "/assets/favicon.svg",
 ];
 
 self.addEventListener("install", (e) => {
