@@ -3,32 +3,51 @@
 <div id="log">rendering…</div>
 <div id="preview" style="margin-top:20px;display:flex;gap:24px;align-items:center"></div>
 <script>
+// The exact "J" glyph from the terminal banner (first letter of JACINTO)
+const J = [
+  "     ##\\",
+  "     ##|",
+  "     ##|",
+  "##   ##|",
+  "\\#####//",
+  " \\====/ ",
+];
 const log = m => document.getElementById('log').textContent = m;
-async function render(size){
-  const res = await fetch('assets/favicon.svg?bust=' + size);
-  const svg = await res.text();
-  const url = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
-  const img = await new Promise((ok,err)=>{const i=new Image();i.onload=()=>ok(i);i.onerror=err;i.src=url;});
-  const c = document.createElement('canvas'); c.width=c.height=size;
-  const x = c.getContext('2d');
-  x.fillStyle = '#060a06'; x.fillRect(0,0,size,size);   // opaque square for app icon
-  x.drawImage(img,0,0,size,size);
+
+function roundRect(x,ctx,X,Y,W,H,R){ctx.beginPath();ctx.moveTo(X+R,Y);ctx.arcTo(X+W,Y,X+W,Y+H,R);ctx.arcTo(X+W,Y+H,X,Y+H,R);ctx.arcTo(X,Y+H,X,Y,R);ctx.arcTo(X,Y,X+W,Y,R);ctx.closePath();}
+
+function render(S){
+  const c=document.createElement('canvas'); c.width=c.height=S;
+  const ctx=c.getContext('2d');
+  // bezel
+  ctx.fillStyle='#060a06'; ctx.fillRect(0,0,S,S);
+  ctx.strokeStyle='rgba(51,255,102,0.28)'; ctx.lineWidth=S*0.03;
+  roundRect(0,ctx,S*0.03,S*0.03,S*0.94,S*0.94,S*0.19); ctx.stroke();
+  // ascii J
+  const fs=S*0.135, lh=fs*1.0;
+  ctx.font=`bold ${fs}px "SFMono-Regular","Menlo","Consolas",monospace`;
+  ctx.textBaseline='top'; ctx.textAlign='left';
+  ctx.fillStyle='#33ff66';
+  ctx.shadowColor='#33ff66'; ctx.shadowBlur=S*0.02;
+  const blockW=ctx.measureText(J[3]).width;   // full 8-char width
+  const blockH=J.length*lh;
+  const x=(S-blockW)/2, y=(S-blockH)/2;
+  J.forEach((line,i)=>ctx.fillText(line,x,y+i*lh));
   return c;
 }
 async function save(canvas,name){
-  const b64 = canvas.toDataURL('image/png').split(',')[1];
-  const r = await fetch('http://127.0.0.1:8992/',{method:'POST',headers:{'X-Filename':name},body:b64});
+  const b64=canvas.toDataURL('image/png').split(',')[1];
+  const r=await fetch('http://127.0.0.1:8992/',{method:'POST',headers:{'X-Filename':name},body:b64});
   return await r.text();
 }
 (async()=>{
   try{
-    const c192 = await render(192), c512 = await render(512);
-    const p = document.getElementById('preview');
-    [c192,c512].forEach(c=>{c.style.width='120px';c.style.imageRendering='auto';p.appendChild(c);});
-    const a = await save(c192,'icon-192.png');
-    const b = await save(c512,'icon-512.png');
-    log('saved icon-192.png ('+a+' bytes) and icon-512.png ('+b+' bytes)');
-  }catch(e){ log('ERROR: ' + e.message); }
+    const c192=render(192), c512=render(512);
+    const p=document.getElementById('preview');
+    [c192,c512].forEach(c=>{c.style.width='140px';p.appendChild(c);});
+    const a=await save(c192,'icon-192.png'), b=await save(c512,'icon-512.png');
+    log('saved icon-192.png ('+a+') and icon-512.png ('+b+')');
+  }catch(e){ log('ERROR: '+e.message); }
 })();
 </script>
 </body>

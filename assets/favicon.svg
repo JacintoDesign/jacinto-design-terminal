@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
   <defs>
     <filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
-      <feGaussianBlur stdDeviation="0.9" result="b"/>
+      <feGaussianBlur stdDeviation="0.55" result="b"/>
       <feMerge>
         <feMergeNode in="b"/>
         <feMergeNode in="SourceGraphic"/>
@@ -11,8 +11,13 @@
   <!-- terminal bezel -->
   <rect width="32" height="32" rx="7" fill="#060a06"/>
   <rect x="1" y="1" width="30" height="30" rx="6" fill="none" stroke="#33ff66" stroke-opacity="0.28" stroke-width="1"/>
-  <!-- phosphor hooked "J": right stem descending into a left-curling bowl -->
-  <g filter="url(#glow)" fill="none" stroke="#33ff66" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M20.5 6 V17 Q20.5 24 13 24 Q6.5 24 6.5 18"/>
-  </g>
+  <!-- the exact "J" glyph from the terminal banner -->
+  <text font-family="'SFMono-Regular','Menlo','Consolas',monospace" font-weight="bold" font-size="4.32" fill="#33ff66" xml:space="preserve" filter="url(#glow)">
+    <tspan x="5.65" y="6.51">     ##\</tspan>
+    <tspan x="5.65" y="10.83">     ##|</tspan>
+    <tspan x="5.65" y="15.15">     ##|</tspan>
+    <tspan x="5.65" y="19.47">##   ##|</tspan>
+    <tspan x="5.65" y="23.79">\#####//</tspan>
+    <tspan x="5.65" y="28.11"> \====/ </tspan>
+  </text>
 </svg>
