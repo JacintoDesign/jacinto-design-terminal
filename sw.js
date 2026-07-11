@@ -1,7 +1,7 @@
 // Phosphor service worker — stale-while-revalidate for same-origin assets
 "use strict";
 
-const CACHE = "phosphor-v3";
+const CACHE = "phosphor-v4";
 const PRECACHE = [
   "/",
   "/index.html",

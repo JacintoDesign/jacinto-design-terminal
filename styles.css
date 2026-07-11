@@ -183,7 +183,8 @@ body {
 
 .ascii {
   font-size: min(1em, 2.05vw);
-  line-height: 1.15;
+  line-height: 1.05;
+  font-weight: 700;
   color: var(--fg-bright);
   white-space: pre;
   overflow-x: hidden;
@@ -280,6 +281,11 @@ body {
 .noscript a { color: var(--accent); }
 .noscript h1 { font-size: 1.2rem; margin-bottom: 1rem; }
 .noscript p { margin-bottom: 0.75rem; }
+
+@media (max-width: 600px) and (orientation: portrait) {
+  .line .sep { display: none; }
+  .line .role2 { display: block; }
+}
 
 @media (max-width: 600px) {
   .screen { font-size: 13px; }

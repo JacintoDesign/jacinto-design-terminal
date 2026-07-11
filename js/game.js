@@ -156,7 +156,7 @@ window.PhosphorGame = (() => {
     if (saved) {
       state = saved;
       io.print("");
-      io.print("═══ THE LOST MAINFRAME ═══", "bright");
+      io.print("=== THE LOST MAINFRAME ===", "bright");
       io.print("");
       io.print(`(resuming saved expedition — ${fmtTime(state.elapsedMs)} on the clock.`, "dim");
       io.print(" type 'quit' then 'dungeon new' to start over.)", "dim");
@@ -166,7 +166,7 @@ window.PhosphorGame = (() => {
     }
     state = freshState();
     io.print("", "");
-    io.print("═══ THE LOST MAINFRAME ═══", "bright");
+    io.print("=== THE LOST MAINFRAME ===", "bright");
     io.print("");
     io.print("The screen shudders. Your prompt falls away like a trapdoor.");
     io.print("Legend says a seventh project was lost down here when MAINFRAME-7");
@@ -185,7 +185,7 @@ window.PhosphorGame = (() => {
 
   function look() {
     const r = room();
-    io.print(`── ${r.name} ──`, "bright");
+    io.print(`-- ${r.name} --`, "bright");
     const desc = state.room === "core" ? describeCore() : r.desc;
     desc.forEach((l) => io.print(l));
     const here = (r.items || []).filter((i) => !has(i));
@@ -305,23 +305,23 @@ window.PhosphorGame = (() => {
   function map() {
     const cell = (key) => {
       const l = MAP_LABELS[key];
-      const shown = state.visited.has(key) ? l : "▒".repeat(l.length);
-      return (state.room === key ? "●" : " ") + shown;
+      const shown = state.visited.has(key) ? l : "?".repeat(l.length);
+      return (state.room === key ? "*" : " ") + shown;
     };
     io.print([
-      "                ┌───────────┐",
-      `                │${cell("core")} │`,
-      "                └─────┬─────┘",
-      " ┌───────────┐  ┌─────┴─────┐  ┌───────────┐",
-      ` │${cell("office")} ├──┤${cell("hall")} ├──┤${cell("library")} │`,
-      " └─────┬─────┘  └─────┬─────┘  └───────────┘",
-      " ┌─────┴─────┐  ┌─────┴─────┐  ┌───────────┐",
-      ` │${cell("tunnel")} │  │${cell("terminal")} ├──┤${cell("breakroom")} │`,
-      " └─────┬─────┘  └───────────┘  └───────────┘",
-      " ┌─────┴─────┐",
-      ` │${cell("substation")}│`,
-      " └───────────┘",
-      "  ● = you are here",
+      "                +-----------+",
+      `                |${cell("core")} |`,
+      "                +-----+-----+",
+      " +-----------+  +-----+-----+  +-----------+",
+      ` |${cell("office")} +--+${cell("hall")} +--+${cell("library")} |`,
+      " +-----+-----+  +-----+-----+  +-----------+",
+      " +-----+-----+  +-----+-----+  +-----------+",
+      ` |${cell("tunnel")} |  |${cell("terminal")} +--+${cell("breakroom")} |`,
+      " +-----+-----+  +-----------+  +-----------+",
+      " +-----+-----+",
+      ` |${cell("substation")}|`,
+      " +-----------+",
+      "  * = you are here",
     ].join("\n"), "dim");
   }
 

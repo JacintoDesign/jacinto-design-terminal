@@ -175,19 +175,21 @@
 
   // ── banner ──────────────────────────────────────────────────────
 
+  // pure ASCII — Unicode block chars render from mismatched fallback
+  // fonts on some Android browsers (Samsung Internet) and garble
   const BANNER = [
-    "     ██╗ █████╗  ██████╗██╗███╗   ██╗████████╗ ██████╗ ",
-    "     ██║██╔══██╗██╔════╝██║████╗  ██║╚══██╔══╝██╔═══██╗",
-    "     ██║███████║██║     ██║██╔██╗ ██║   ██║   ██║   ██║",
-    "██   ██║██╔══██║██║     ██║██║╚██╗██║   ██║   ██║   ██║",
-    "╚█████╔╝██║  ██║╚██████╗██║██║ ╚████║   ██║   ╚██████╔╝",
-    " ╚════╝ ╚═╝  ╚═╝ ╚═════╝╚═╝╚═╝  ╚═══╝   ╚═╝    ╚═════╝ ",
-    "██████╗ ███████╗███████╗██╗ ██████╗ ███╗   ██╗",
-    "██╔══██╗██╔════╝██╔════╝██║██╔════╝ ████╗  ██║",
-    "██║  ██║█████╗  ███████╗██║██║  ███╗██╔██╗ ██║",
-    "██║  ██║██╔══╝  ╚════██║██║██║   ██║██║╚██╗██║",
-    "██████╔╝███████╗███████║██║╚██████╔╝██║ ╚████║",
-    "╚═════╝ ╚══════╝╚══════╝╚═╝ ╚═════╝ ╚═╝  ╚═══╝",
+    "     ##\\ #####\\  ######\\##\\###\\   ##\\########\\ ######\\ ",
+    "     ##|##/==##\\##/====/##|####\\  ##|\\==##/==/##/===##\\",
+    "     ##|#######|##|     ##|##/##\\ ##|   ##|   ##|   ##|",
+    "##   ##|##/==##|##|     ##|##|\\##\\##|   ##|   ##|   ##|",
+    "\\#####//##|  ##|\\######\\##|##| \\####|   ##|   \\######//",
+    " \\====/ \\=/  \\=/ \\=====/\\=/\\=/  \\===/   \\=/    \\=====/ ",
+    "######\\ #######\\#######\\##\\ ######\\ ###\\   ##\\",
+    "##/==##\\##/====/##/====/##|##/====/ ####\\  ##|",
+    "##|  ##|#####\\  #######\\##|##|  ###\\##/##\\ ##|",
+    "##|  ##|##/==/  \\====##|##|##|   ##|##|\\##\\##|",
+    "######//#######\\#######|##|\\######//##| \\####|",
+    "\\=====/ \\======/\\======/\\=/ \\=====/ \\=/  \\===/",
   ].join("\n");
 
   function fitAscii(div) {
@@ -208,7 +210,8 @@
   function banner() {
     fitAscii(print(BANNER, "ascii"));
     print("");
-    print(D.site.title, "bright");
+    const [role1, role2] = D.site.title.split(" · ");
+    printHTML(`${esc(role1)}<span class="sep"> · </span><span class="role2">${esc(role2)}</span>`, "bright");
     print(`${D.site.location}`, "dim");
     print("");
   }
@@ -236,7 +239,7 @@
     print("");
     print("HIGHLIGHTS", "bright");
     cs.highlights.forEach(([t, b]) => {
-      print(`    ▸ ${t}`, "bright");
+      print(`    > ${t}`, "bright");
       print(`      ${b}`);
       print("");
     });
@@ -302,7 +305,7 @@
     state.mode = "form";
     form.step = 0;
     form.data = { name: "", email: "", message: "" };
-    print("── SEND A MESSAGE ──", "bright");
+    print("-- SEND A MESSAGE --", "bright");
     print("three prompts, then it lands in my inbox. type 'cancel' (or Esc) to abort.", "dim");
     print("");
     promptLabel.textContent = "name:";
@@ -552,16 +555,16 @@
       desc: "system info",
       fn() {
         const logo = [
-          " ┌───────────┐ ",
-          " │ >_        │ ",
-          " │           │ ",
-          " │ PHOSPHOR  │ ",
-          " │ rev 2.0   │ ",
-          " └───────────┘ ",
+          " +-----------+ ",
+          " | >_        | ",
+          " |           | ",
+          " | PHOSPHOR  | ",
+          " | rev 2.0   | ",
+          " +-----------+ ",
         ];
         const info = [
           ["", `${state.root ? "root" : state.user}@jacinto`],
-          ["", "────────────────"],
+          ["", "----------------"],
           ["OS", "JacintoOS 5.0 LTS (Toronto)"],
           ["Host", "jacinto.design"],
           ["Kernel", "self-taught 4mo → senior"],
@@ -800,7 +803,7 @@
     degauss: {
       hidden: true,
       fn() {
-        print("degaussing…  ␂BWOOoonngg␃", "dim");
+        print("degaussing…  *BWOOoonngg*", "dim");
         if (!REDUCED) {
           crt.classList.remove("degauss");
           void crt.offsetWidth;
@@ -935,7 +938,7 @@
     if (state.mode === "su") {
       const div = document.createElement("div");
       div.className = "line";
-      div.innerHTML = `<span class="prompt">password:</span><span class="cmd-echo"> ••••••••</span>`;
+      div.innerHTML = `<span class="prompt">password:</span><span class="cmd-echo"> ********</span>`;
       output.appendChild(div);
       return handleSu(trimmed);
     }
