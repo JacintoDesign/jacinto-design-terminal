@@ -68,7 +68,7 @@
   }
 
   function promptString() {
-    return state.root ? "root@jacinto:~#" : `${state.user}@jacinto:~$`;
+    return state.root ? "root@jacinto.design:~#" : `${state.user}@jacinto.design:~$`;
   }
 
   function refreshPrompt() {
@@ -564,7 +564,7 @@
           " +-----------+ ",
         ];
         const info = [
-          ["", `${state.root ? "root" : state.user}@jacinto`],
+          ["", `${state.root ? "root" : state.user}@jacinto.design`],
           ["", "----------------"],
           ["OS", "JacintoOS 5.0 LTS (Toronto)"],
           ["Host", "jacinto.design"],
