@@ -140,12 +140,12 @@ window.PhosphorData = {
     {
       id: "music-player",
       title: "Music Player",
-      year: "2025",
+      year: "2026",
       category: "Audio · React",
       description: "A Spotify-style player for your own MP3s — no server, no account, no upload. In-browser ID3 parsing with SHA-256 dedupe, a drag-to-reorder queue, IndexedDB offline library, Media Session lock-screen controls, and real-time audio visualizers.",
       tech: ["TypeScript", "React", "PWA", "IndexedDB"],
-      href: "https://ztm-music-player.vercel.app",
-      repo: "https://github.com/JacintoDesign/ztm-music-player",
+      href: "https://ztm-music.vercel.app",
+      repo: "https://github.com/JacintoDesign/ztm-music-player-v2",
       image: "assets/projects/music-player.jpg",
       caseStudy: {
         tagline: "A Spotify-style player for your own MP3s — no server, no account, no upload.",
