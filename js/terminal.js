@@ -16,6 +16,8 @@
   const REDUCED = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const ROOT_PW = "hunter2";
 
+  const isMobile = () => window.matchMedia("(max-width: 600px)").matches;
+
   const state = {
     mode: "shell", // "shell" | "game" | "form" | "su"
     history: [],
@@ -445,7 +447,8 @@
     about: {
       desc: "who is jacinto?",
       fn() {
-        D.about.forEach((l) => print(l));
+        const lines = isMobile() ? D.aboutMobile : D.about;
+        lines.forEach((l) => print(l));
         print("");
         D.stats.forEach(([v, l]) => printHTML(`<span class="k">${esc(v.padEnd(5))}</span>${esc(l)}`));
       },
@@ -456,12 +459,19 @@
       fn() {
         print("PROJECTS — type an <id> for the case study · 'open <id>' for links", "dim");
         print("");
+        const mobile = isMobile();
         D.projects.forEach((p) => {
-          const id = p.id.padEnd(16);
           const status = p.status === "soon" ? "  [COMING SOON]" : "";
-          printHTML(
-            `<span class="k">${esc(id)}</span>${esc(p.title.padEnd(22))}<span class="dim">${esc(p.year)}  ${esc(p.category)}</span>${status ? `<span class="k">${status}</span>` : ""}`
-          );
+          if (mobile) {
+            printHTML(
+              `<span class="k">${esc(p.id)}</span>  ${esc(p.title)}  <span class="dim">${esc(p.year)}</span>${status ? `<span class="k">${status}</span>` : ""}`
+            );
+          } else {
+            const id = p.id.padEnd(16);
+            printHTML(
+              `<span class="k">${esc(id)}</span>${esc(p.title.padEnd(22))}<span class="dim">${esc(p.year)}  ${esc(p.category)}</span>${status ? `<span class="k">${status}</span>` : ""}`
+            );
+          }
         });
       },
     },
@@ -513,9 +523,17 @@
     skills: {
       desc: "the toolbox",
       fn() {
-        D.skills.forEach(([cat, list]) =>
-          printHTML(`<span class="k">${esc(cat.padEnd(11))}</span>${esc(list)}`)
-        );
+        if (isMobile()) {
+          D.skills.forEach(([cat, list], i) => {
+            if (i) print("");
+            printHTML(`<span class="k">${esc(cat)}</span>`);
+            print(list);
+          });
+        } else {
+          D.skills.forEach(([cat, list]) =>
+            printHTML(`<span class="k">${esc(cat.padEnd(11))}</span>${esc(list)}`)
+          );
+        }
       },
     },
 
