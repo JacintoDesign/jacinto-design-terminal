@@ -25,6 +25,22 @@ window.PhosphorData = {
     "               or budget.",
   ],
 
+  // flowing paragraph version for narrow/mobile screens — same content, no
+  // manual column alignment or hand-wrapped line breaks to fight
+  aboutMobile: [
+    "Jacinto Wong — Senior Developer at the Canadian Broadcasting Corporation, instructor at Zero to Mastery Academy, based in Toronto, Canada.",
+    "",
+    "The spark. Passion for technology since age 12, when I built my first computer.",
+    "",
+    "Teaching. 5 years teaching in Canada and South Korea, now teaching web dev online.",
+    "",
+    "The leap. Self-taught developer — landed a Senior Developer role after just 4 months of online learning. I know what breaking into tech takes.",
+    "",
+    "The mission. High-quality, affordable courses that help students build real portfolio projects and transition into web development careers.",
+    "",
+    "The goal. Quality education accessible to everyone, regardless of background or budget.",
+  ],
+
   stats: [
     ["5+", "years teaching"],
     ["4", "months from first line of code to senior role"],
