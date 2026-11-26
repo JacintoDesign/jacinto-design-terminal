@@ -196,6 +196,72 @@ body {
 .line .cmd-echo { color: var(--fg-bright); }
 .line .k { color: var(--fg-bright); }
 
+/* ── Courses box (above the prompt on boot) ────────────────────── */
+
+.course-box {
+  position: relative;
+  max-width: 46rem;
+  margin: 0.2em 0 1.2em;
+  padding: 0.9em 1.1em 1.1em;
+  border: 1px solid var(--fg-dim);
+  box-shadow: 0 0 14px var(--selection), inset 0 0 22px var(--selection);
+  overflow: hidden;
+}
+.course-box::before {            /* slow sweep of brighter phosphor */
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(100deg, transparent 30%, var(--selection) 50%, transparent 70%);
+  transform: translateX(-100%);
+  animation: cb-sweep 5.5s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes cb-sweep { 0%, 55% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
+
+.cb-head { display: flex; justify-content: space-between; align-items: center; gap: 1em; }
+.cb-tag { display: inline-flex; align-items: center; gap: 0.6em; color: var(--fg-dim); letter-spacing: 0.14em; font-size: 0.85em; }
+.cb-dot { width: 0.55em; height: 0.55em; background: var(--fg-bright); box-shadow: 0 0 8px var(--glow); animation: cb-blink 1.1s steps(2, start) infinite; }
+@keyframes cb-blink { to { visibility: hidden; } }
+
+.cb-tabs { display: inline-flex; gap: 0.35em; }
+.cb-tabs button {
+  font: inherit;
+  font-size: 0.85em;
+  min-width: 2em;
+  padding: 0.1em 0.45em;
+  color: var(--fg-dim);
+  background: transparent;
+  border: 1px solid var(--fg-dim);
+  cursor: pointer;
+}
+.cb-tabs button[aria-current="true"] { color: var(--screen); background: var(--fg); border-color: var(--fg); text-shadow: none; }
+.cb-tabs button:hover { color: var(--fg-bright); border-color: var(--fg-bright); }
+.cb-tabs button[aria-current="true"]:hover { color: var(--screen); }
+
+.cb-body { display: block; margin-top: 0.7em; color: inherit; text-decoration: none; position: relative; }
+.cb-title { display: block; color: var(--fg-bright); font-weight: 700; min-height: 1.55em; }
+.cb-title::after { content: "\2588"; margin-left: 0.1em; animation: cb-blink 1s steps(2, start) infinite; }
+.cb-blurb { display: block; margin-top: 0.35em; color: var(--fg); line-height: 1.55; }
+.cb-cta { display: inline-block; margin-top: 0.7em; color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
+.cb-body:hover .cb-cta, .cb-body:focus-visible .cb-cta { color: var(--fg-bright); }
+.cb-body:focus-visible { outline: 1px dashed var(--fg-bright); outline-offset: 4px; }
+
+.course-box.cb-in .cb-blurb, .course-box.cb-in .cb-cta { animation: cb-fade 0.6s ease-out both; }
+.course-box.cb-in .cb-cta { animation-delay: 0.15s; }
+@keyframes cb-fade { from { opacity: 0; transform: translateY(4px); } }
+
+.cb-bar { position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: var(--selection); }
+.cb-bar span { display: block; height: 100%; width: 0; background: var(--fg); box-shadow: 0 0 8px var(--glow); }
+
+@media (prefers-reduced-motion: reduce) {
+  .course-box::before, .cb-dot, .cb-title::after { animation: none; }
+  .course-box.cb-in .cb-blurb, .course-box.cb-in .cb-cta { animation: none; }
+}
+@media (max-width: 600px) {
+  .course-box { padding: 0.8em 0.85em 1em; }
+  .cb-tag { letter-spacing: 0.08em; }
+}
+
 /* ── Input line ────────────────────────────────────────────────── */
 
 .input-line { display: flex; align-items: baseline; gap: 0.6ch; }

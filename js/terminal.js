@@ -1078,6 +1078,93 @@
     input.focus({ preventScroll: true });
   });
 
+  // ── courses box: shown above the prompt on boot ─────────────────
+
+  const COURSE_MS = 7000;
+
+  function coursesBox() {
+    const box = document.createElement("section");
+    box.className = "course-box";
+    box.setAttribute("aria-label", "Courses I teach");
+    box.innerHTML = `
+      <div class="cb-head">
+        <span class="cb-tag"><span class="cb-dot" aria-hidden="true"></span><span class="cb-label"></span></span>
+        <span class="cb-tabs" role="group" aria-label="Choose a course">${D.courses
+          .map((c, i) => `<button type="button" data-i="${i}" aria-label="${esc(c.title)}">${i + 1}</button>`)
+          .join("")}</span>
+      </div>
+      <a class="cb-body" target="_blank" rel="noopener noreferrer">
+        <span class="cb-title"></span>
+        <span class="cb-blurb"></span>
+        <span class="cb-cta">view the course →</span>
+      </a>
+      <div class="cb-bar" aria-hidden="true"><span></span></div>`;
+    output.appendChild(box);
+
+    const $ = (sel) => box.querySelector(sel);
+    const label = $(".cb-label"), title = $(".cb-title"), blurb = $(".cb-blurb");
+    const body = $(".cb-body"), bar = $(".cb-bar span"), tabs = box.querySelectorAll(".cb-tabs button");
+    let index = 0, typer = 0, timer = 0, paused = false, started = 0, left = COURSE_MS;
+
+    function show(i) {
+      index = (i + D.courses.length) % D.courses.length;
+      const c = D.courses[index];
+      label.textContent = c.label.toUpperCase();
+      body.href = c.href;
+      blurb.textContent = c.blurb;
+      tabs.forEach((t, j) => t.setAttribute("aria-current", j === index ? "true" : "false"));
+      box.classList.remove("cb-in");
+      void box.offsetWidth; // restart the fade
+      box.classList.add("cb-in");
+      clearInterval(typer);
+      if (REDUCED) title.textContent = c.title;
+      else {
+        let n = 0;
+        title.textContent = "";
+        typer = setInterval(() => {
+          title.textContent = c.title.slice(0, ++n);
+          if (n >= c.title.length) clearInterval(typer);
+        }, 22);
+      }
+      left = COURSE_MS;
+      schedule();
+    }
+
+    function schedule() {
+      clearTimeout(timer);
+      if (REDUCED || paused) return;
+      started = performance.now();
+      bar.style.transition = "none";
+      bar.style.width = `${(1 - left / COURSE_MS) * 100}%`;
+      void bar.offsetWidth;
+      bar.style.transition = `width ${left}ms linear`;
+      bar.style.width = "100%";
+      timer = setTimeout(() => (box.isConnected ? show(index + 1) : clearInterval(typer)), left);
+    }
+
+    function pause() {
+      if (paused || REDUCED) return;
+      paused = true;
+      clearTimeout(timer);
+      left = Math.max(0, left - (performance.now() - started));
+      bar.style.transition = "none";
+      bar.style.width = `${(1 - left / COURSE_MS) * 100}%`;
+    }
+    function resume() {
+      if (!paused) return;
+      paused = false;
+      schedule();
+    }
+
+    tabs.forEach((t) => t.addEventListener("click", () => show(+t.dataset.i)));
+    box.addEventListener("mouseenter", pause);
+    box.addEventListener("mouseleave", resume);
+    box.addEventListener("focusin", pause);
+    box.addEventListener("focusout", resume);
+    show(0);
+    scrollDown();
+  }
+
   // ── boot ────────────────────────────────────────────────────────
 
   async function boot() {
@@ -1118,6 +1205,7 @@
     if (state.root) print("welcome back, root #", "dim");
     else if (state.user === "sysop") print("welcome back, sysop ★", "dim");
     print("");
+    coursesBox();
 
     inputLine.hidden = false;
     chips.hidden = false;
