@@ -388,8 +388,8 @@ window.PhosphorGame = (() => {
     ].join("\n"), "ascii");
     io.print("");
     io.print("PROJECT_07 RESTORED: \"Agentic Engineering\"", "bright");
-    io.print("A course on building production-grade AI agents — coming soon");
-    io.print("to Zero to Mastery. You found it before the release. Nice.");
+    io.print("A course on directing AI agents to build and ship real software —");
+    io.print("out now on Zero to Mastery. Type `courses` for the link.");
     io.print("");
     addAchievement("SYSOP");
     io.print("★ ACHIEVEMENT UNLOCKED: SYSOP", "bright");

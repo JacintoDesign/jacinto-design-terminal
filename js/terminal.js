@@ -425,7 +425,7 @@
         print("  open <id>      open a project in a new tab (e.g. open vibemail)");
         print("  preview <id>   render a project screenshot in glorious ASCII");
         print("  skills         the toolbox");
-        print("  now            what i'm building right now");
+        print("  courses        the courses i teach");
         print("  contact        get in touch (contact --send composes right here)");
         print("  socials        elsewhere on the internet");
         print("");
@@ -537,15 +537,21 @@
       },
     },
 
-    now: {
-      desc: "currently building",
+    courses: {
+      desc: "the courses i teach",
       fn() {
-        print("CURRENTLY BUILDING", "bright");
-        print("");
-        print(D.now.title, "bright");
-        print(D.now.blurb);
+        D.courses.forEach((c, i) => {
+          if (i) print("");
+          print(c.label.toUpperCase(), "dim");
+          print(c.title, "bright");
+          print(c.blurb);
+          printHTML(link(c.href, "view the course →"));
+        });
       },
     },
+
+    // old name, kept so muscle memory still works
+    now: { hidden: true, fn: () => commands.courses.fn() },
 
     contact: {
       desc: "get in touch",

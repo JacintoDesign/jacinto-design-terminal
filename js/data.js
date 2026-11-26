@@ -47,10 +47,26 @@ window.PhosphorData = {
     ["100+", "projects shipped"],
   ],
 
-  now: {
-    title: "Agentic Engineering course",
-    blurb: "A new course on building production-grade AI agents — orchestration, tool use, and evals. In progress at Zero to Mastery.",
-  },
+  courses: [
+    {
+      label: "Latest course",
+      title: "Agentic Engineering Bootcamp: Real Skills for the Age of Agentic AI",
+      blurb: "Direct AI agents in Claude, Cursor, ChatGPT and Antigravity to plan, build, test and ship real software — from agent-ready specs to reviewing AI-written code.",
+      href: "https://academy.zerotomastery.io/a/aff_cd1sqkvg/external?affcode=441520_7lacw2wa",
+    },
+    {
+      label: "Course",
+      title: "The Claude Code Bootcamp: Design, Build, Test and Deploy with Claude",
+      blurb: "Master Claude Code and Claude Design to plan, build, test and deploy production-ready web apps — from backend architecture to motion-rich interfaces.",
+      href: "https://academy.zerotomastery.io/a/aff_4h5z3gd7/external?affcode=441520_7lacw2wa",
+    },
+    {
+      label: "Course",
+      title: "The Vibe Coding Bootcamp: Become an AI-Augmented Developer",
+      blurb: "An AI-first path into tech — master Cursor, Copilot, Claude and Gemini, direct the work, and ship a job-ready portfolio.",
+      href: "https://academy.zerotomastery.io/a/aff_s02b4247/external?affcode=441520_7lacw2wa",
+    },
+  ],
 
   projects: [
     {
@@ -207,10 +223,10 @@ window.PhosphorData = {
       id: "agentic-course",
       title: "Agentic Engineering",
       year: "2026",
-      category: "Course · In progress",
-      description: "A new course on building production-grade AI agents — orchestration, tool use, and evals. Currently in development at Zero to Mastery.",
-      tech: ["AI Agents", "TypeScript", "LLMs", "Evals"],
-      status: "soon",
+      category: "Course",
+      description: "Direct AI agents in Claude, Cursor, ChatGPT and Antigravity to plan, build, test and ship real software — from agent-ready specs to reviewing AI-written code.",
+      tech: ["Claude", "Cursor", "ChatGPT", "Antigravity"],
+      href: "https://academy.zerotomastery.io/a/aff_cd1sqkvg/external?affcode=441520_7lacw2wa",
     },
   ],
 
@@ -258,7 +274,7 @@ window.PhosphorData = {
       "built:      in a terminal, about a terminal, with Claude.",
     ],
     "todo.txt": [
-      "[ ] ship the Agentic Engineering course",
+      "[x] ship the Agentic Engineering course",
       "[x] reboot MAINFRAME-7  (thanks, whoever you are)",
       "[ ] teach the vending machine to accept exact change",
       "[ ] water the server-room plants (plastic, but still)",

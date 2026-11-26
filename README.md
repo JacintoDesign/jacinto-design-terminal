@@ -7,7 +7,7 @@ Type `help` to get started. Not everything is listed.
 ## Features
 
 - BIOS-style boot with CRT power-on, scanlines, vignette, and phosphor glow (`fx off` for plain text; flicker honors `prefers-reduced-motion`)
-- Command shell: `about`, `projects`, `open <id>`, `preview <id>` (ASCII-rendered screenshots), `skills`, `now`, `contact`, `socials`, `neofetch`, `theme green|amber|ice`
+- Command shell: `about`, `projects`, `open <id>`, `preview <id>` (ASCII-rendered screenshots), `skills`, `courses`, `contact`, `socials`, `neofetch`, `theme green|amber|ice`
 - Fish-style ghost autocomplete (Tab/→ accepts), ↑/↓ history, Ctrl-L clear
 - Full case studies as man pages: `cat projects/<id>.md`
 - In-terminal contact form (`contact --send`) posting through FormSubmit
